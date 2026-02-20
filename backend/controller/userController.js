@@ -86,18 +86,3 @@ export const getData = async (req, res) => {
     console.log('getData API hitted')
     res.send("getting data...")
 }
-
-
-// 1. `git init`
-// 2. `git add .`
-// 3. `git commit -m "First Commit"`
-// 4. `Create a new repository on GitHub`
-// * `Go to https://github.com/new`
-// * `Enter a repository name (same as your project name, usually` ).
-// * `Choose: Public or Private`
-// * `Don’t initialize with a README` 
-// * `Click Create repository`
-// 5. `Copy the URL GitHub shows you — something like :https://github.com/yourusername/your-repo-name.git`
-// 6. `Then run : git remote add origin https://github.com/yourusername/your-repo-name. Git`
-// 7. `git branch -M main`
-// 8. `git push -u origin main`
