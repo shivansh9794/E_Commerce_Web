@@ -12,8 +12,8 @@ export const addUser = async (req, res) => {
     const count = await User.estimatedDocumentCount()
 
     // console.log("Count is : "+count);
-    if(count==0){
-        type="admin"
+    if (count == 0) {
+        type = "admin"
     }
 
     const user = await User.create({
@@ -46,6 +46,27 @@ export const getAllUsers = async (req, res) => {
         res.status(400);
         throw new Error("Something went wrong ..")
     }
+}
+
+export const login = async (req, res) => {
+
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+        const p = await user.matchPassword(password);
+        if (user && p) {
+            res.status(200).json({ message: "User Found", user })
+        } 
+        else {
+            res.status(401).json({message:"Wrong Password"})
+        }
+    }
+    catch (error) {
+        console.log(error);
+        res.status(404).json({message:"User Doesn't Exist in DB"})
+    }
+
 }
 
 export const deleteUser = async (req, res) => {
