@@ -1,3 +1,4 @@
+import generateToken from "../config/generateToken.js";
 import User from "../models/userModel.js";
 
 export const addUser = async (req, res) => {
@@ -55,16 +56,31 @@ export const login = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         const p = await user.matchPassword(password);
+
         if (user && p) {
-            res.status(200).json({ message: "User Found", user })
-        } 
+            const token=generateToken(user._id);
+            res.cookie("jwt", token, {
+                httpOnly: true,
+                secure: false,
+                maxAge: 7 * 24 * 60 * 60 * 1000
+            });
+            res.status(200).json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                pic: user.pic,
+                token: token,
+            })
+            // res.status(200).json({ message: "User Found", user })
+        }
         else {
-            res.status(401).json({message:"Wrong Password"})
+            res.status(401).json({ message: "Wrong Password" })
         }
     }
     catch (error) {
         console.log(error);
-        res.status(404).json({message:"User Doesn't Exist in DB"})
+        res.status(404).json({ message: "User Doesn't Exist in DB" })
     }
 
 }
@@ -102,8 +118,12 @@ export const getAdmin = async (req, res) => {
         });
 }
 
-
 export const getData = async (req, res) => {
     console.log('getData API hitted')
     res.send("getting data...")
+}
+
+
+export const checkProtection=async(req,res)=>{
+    
 }

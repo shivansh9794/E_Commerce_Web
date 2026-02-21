@@ -8,5 +8,6 @@ router.delete('/deleteUser', deleteUser);
 router.get('/getAdmin', getAdmin);
 router.get('/getData', getData);
 router.get('/login', login);
+router.get('/checkProtection', checkProtection);
 
 export default router;
