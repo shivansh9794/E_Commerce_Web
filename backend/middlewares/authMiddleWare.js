@@ -25,14 +25,16 @@ const protect = async (req, res, next) => {
 
   // 1️⃣ Check Authorization Header
   if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+        console.log("Bearer Token Found")
+        token = req.headers.authorization.split(" ")[1];
   }
 
   // 2️⃣ Check Cookies (if header not present)
   if (!token && req.cookies?.jwt) {
+    console.log("Cookie Found")
     token = req.cookies.jwt;
   }
 

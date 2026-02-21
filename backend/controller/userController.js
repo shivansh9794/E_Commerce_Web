@@ -55,10 +55,13 @@ export const login = async (req, res) => {
 
     try {
         const user = await User.findOne({ email });
-        const p = await user.matchPassword(password);
-
+        const p = await user?.matchPassword(password);
+        if (p == false) {
+            res.status(401).json({ message: "Wrong Password. Login Failed" });
+            throw new Error("Wrong Password");
+        }
         if (user && p) {
-            const token=generateToken(user._id);
+            const token = generateToken(user._id);
             res.cookie("jwt", token, {
                 httpOnly: true,
                 secure: false,
@@ -88,9 +91,18 @@ export const login = async (req, res) => {
 export const deleteUser = async (req, res) => {
     try {
         const userId = req?.body?.userId;
+        const id = req?.user?._id;
+
+        if (req?.user?.type != "admin") {
+            return res.status(403).json({ message: "You are not Authorised to Delete a User" })
+        }
 
         if (!userId) {
-            res.status(400).send({ messege: "User ID Not Found" })
+            res.status(400).send({ message: "User ID Not Found" })
+        }
+
+        if (userId === req.user._id.toString()) {
+            return res.status(400).json({ message: "Cannot delete yourself" });
         }
 
         const user = await User.findByIdAndDelete(userId);
@@ -124,6 +136,11 @@ export const getData = async (req, res) => {
 }
 
 
-export const checkProtection=async(req,res)=>{
-    
+export const checkProtection = async (req, res) => {
+    const user = req.user;
+    if (!user) {
+        res.status(401);
+        throw new Error("You are not authorised");
+    }
+    res.status(200).json({ message: "You are Logged In", user });
 }
