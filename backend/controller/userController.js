@@ -144,3 +144,32 @@ export const checkProtection = async (req, res) => {
     }
     res.status(200).json({ message: "You are Logged In", user });
 }
+
+export const makeAdmin = async (req, res) => {
+    try {
+        const id = req.body?.id;
+        const userID = req?.user?._id;
+        if (!userID) {
+            return res.status(400).json({ message: "No User Id detected" })
+        }
+
+        if (req?.user?.type != "admin") {
+            return res.status(401).json({ message: "Not authorised to make Admin" })
+        }
+
+        console.log(id);
+
+        const user = await User.findByIdAndUpdate(id,{type:"admin"},{new:true});
+
+        await user.save();
+
+        if (!user) {
+            return res.status(404).json({ message: "No User Found on This Id" })
+        }
+
+        res.status(200).json({message:"Selected As Admin Succesfull",user});
+
+    } catch (error) {
+        res.status(500).json({ message: "Something Went Wrong" })
+    }
+}
