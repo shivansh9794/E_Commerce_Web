@@ -14,3 +14,4 @@ router.get('/checkProtection',protect,checkProtection);
 router.post('/makeAdmin',protect,makeAdmin);
 
 export default router;
+
