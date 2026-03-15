@@ -55,6 +55,7 @@ export const login = async (req, res) => {
 
     try {
         const user = await User.findOne({ email });
+        if(!user){return res.status(404).json({ message: "Email Does't Exist in DB" })}
         const p = await user?.matchPassword(password);
         if (p == false) {
             res.status(401).json({ message: "Wrong Password. Login Failed" });
@@ -65,7 +66,8 @@ export const login = async (req, res) => {
             res.cookie("jwt", token, {
                 httpOnly: true,
                 secure: false,
-                maxAge: 7 * 24 * 60 * 60 * 1000
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+                sameSite: "lax"
             });
             res.status(200).json({
                 _id: user._id,
@@ -75,7 +77,7 @@ export const login = async (req, res) => {
                 pic: user.pic,
                 token: token,
             })
-            // res.status(200).json({ message: "User Found", user })
+            // res.status(200).json({ message: "Login successful", user })
         }
         else {
             res.status(401).json({ message: "Wrong Password" })

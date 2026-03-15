@@ -2,16 +2,24 @@ import React from 'react'
 import Home from './pages/Home'
 import { Routes, Route } from 'react-router-dom'
 import SignInPage from './pages/auth/signInPage'
+import LoginPage from './pages/auth/LoginPage'
+import Navbar from './components/NavBar'
+
 
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home/>} />
-      <Route path="/login" element={<Home/>} />
-      <Route path="/signIn" element={<SignInPage/>} />
+    <>
 
-    </Routes>
+      <Navbar />
+      <Routes>
+
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signIn" element={<SignInPage />} />
+
+      </Routes>
+    </>
   )
 }
 
