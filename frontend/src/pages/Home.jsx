@@ -4,7 +4,7 @@ import NavBar from '../components/NavBar'
 const Home = () => {
   return (
     <div>
-      <h1>home page</h1>
+      {/* <h1>home page</h1> */}
       <div className="p-6">
         {[...Array(40)].map((_, i) => (
           <p key={i} className="mb-4">

@@ -185,8 +185,9 @@ const Navbar = () => {
 
 
             </div>
-
+            
           </nav>
+
         </header>
 
       </div>
@@ -202,11 +203,9 @@ const Navbar = () => {
           <li className="cursor-pointer hover:text-blue-500">Profile</li>
         </ul>
       </div >
+
     </>
   );
 };
 
 export default Navbar;
-
-
-
