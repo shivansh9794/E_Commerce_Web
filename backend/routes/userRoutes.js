@@ -1,5 +1,5 @@
 import express from 'express'
-import { addUser, checkProtection, deleteUser, getAdmin, getAllUsers, getData, login, makeAdmin } from '../controller/userController.js';
+import { addUser, checkProtection, deleteUser, getAdmin, getAllUsers, getData, login, makeAdmin, updateUser } from '../controller/userController.js';
 import protect from '../middlewares/authMiddleWare.js';
 const router = express.Router();
 
@@ -12,6 +12,7 @@ router.post('/login', login);
 // checking for auth
 router.get('/checkProtection',protect,checkProtection);
 router.post('/makeAdmin',protect,makeAdmin);
+router.put('/updateUser/:id',protect,updateUser)
 
 export default router;
 

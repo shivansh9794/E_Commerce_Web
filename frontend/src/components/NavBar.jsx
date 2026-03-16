@@ -1,11 +1,30 @@
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/userSlice";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
-
-
-
-
-import React from "react";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [openDropdown, setOpenDropdown] = React.useState(false);
+
+  const userData = useSelector((state) => state.user.user);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("UserInfo"));
+    dispatch(setUser(userData));
+
+    if (!userData) {
+      navigate("/login");
+      toast.error("Login To Continue")
+    }
+  }, []);
+
+
+  console.log("-->", userData);
   return (
     <>
       {/* Primary NavBar */}
@@ -19,7 +38,7 @@ const Navbar = () => {
             <div className="me-5 ">
               {/* Logo */}
               <a
-                className="flex-none rounded-md text-2xl inline-block font-bold focus:outline-hidden focus:opacity-80" href="#" aria-label="E-Bazaar">E-Bazaar</a>
+                className="flex-none rounded-md text-2xl inline-block font-bold focus:outline-hidden focus:opacity-80" aria-label="E-Bazaar">E-Bazaar</a>
               {/* End Logo */}
             </div>
 
@@ -166,7 +185,7 @@ const Navbar = () => {
 
 
               {/* Account */}
-              <div className="hs-dropdown [--placement:bottom-right] relative inline-flex">
+              {/* <div className="hs-dropdown [--placement:bottom-right] relative inline-flex">
                 <button
                   id="hs-dropdown-account"
                   type="button"
@@ -177,15 +196,87 @@ const Navbar = () => {
                 >
                   <img
                     className="shrink-0 size-9.5 rounded-full"
-                    src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80"
-                    alt="Avatar"
+                    src={userData?.profilePic}
+                    alt="profilePic"
                   />
                 </button>
+              </div> */}
+              <div className="relative inline-flex">
+                <button
+                  onClick={() => setOpenDropdown(!openDropdown)}
+                  className="size-9.5 inline-flex justify-center items-center rounded-full cursor-pointer"
+                >
+                  <img
+                    className="shrink-0 size-9.5 rounded-full"
+                    src={userData?.profilePic}
+                    alt="profilePic"
+                  />
+                </button>
+
+                {openDropdown && (
+                  <div className="absolute top-10 right-1 mt-3 w-64 bg-white shadow-lg rounded-xl border z-50 p-4">
+
+                    {/* Profile Section */}
+                    <div className="flex items-center gap-3 border-b pb-3">
+
+                      <img
+                        src={userData?.profilePic}
+                        alt="profile"
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+
+                      <div>
+                        <p className="font-semibold text-sm">
+                          {userData?.name}
+                        </p>
+
+                        <p className="text-xs text-gray-500">
+                          {userData?.email}
+                        </p>
+                      </div>
+
+                    </div>
+
+                    {/* Buttons */}
+                    <div className="flex flex-col gap-2 mt-3">
+
+                      <button
+                        onClick={() => { setOpenDropdown(!openDropdown), navigate("/orders") }}
+                        className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm"
+                      >
+                        My Orders
+                      </button>
+
+                      <button
+                        onClick={() => { setOpenDropdown(!openDropdown), navigate("/profile") }}
+                        className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-100 text-sm"
+                      >
+                        Profile
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          localStorage.removeItem("UserInfo");
+                          dispatch(setUser(null));
+                          toast.success("Logged out");
+                          setOpenDropdown(!openDropdown)
+                          navigate("/login", { replace: true });
+                        }}
+                        className="w-full text-left px-3 py-2 rounded-lg hover:bg-red-100 text-red-600 text-sm"
+                      >
+                        Logout
+                      </button>
+
+                    </div>
+
+                  </div>
+                )}
               </div>
 
 
+
             </div>
-            
+
           </nav>
 
         </header>

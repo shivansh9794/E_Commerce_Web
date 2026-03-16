@@ -55,7 +55,7 @@ export const login = async (req, res) => {
 
     try {
         const user = await User.findOne({ email });
-        if(!user){return res.status(404).json({ message: "Email Does't Exist in DB" })}
+        if (!user) { return res.status(404).json({ message: "Email Does't Exist in DB" }) }
         const p = await user?.matchPassword(password);
         if (p == false) {
             res.status(401).json({ message: "Wrong Password. Login Failed" });
@@ -73,8 +73,8 @@ export const login = async (req, res) => {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
-                isAdmin: user.isAdmin,
-                pic: user.pic,
+                type: user.type,
+                profilePic: user.profilePic,
                 token: token,
             })
             // res.status(200).json({ message: "Login successful", user })
@@ -161,7 +161,7 @@ export const makeAdmin = async (req, res) => {
 
         console.log(id);
 
-        const user = await User.findByIdAndUpdate(id,{type:"admin"},{new:true});
+        const user = await User.findByIdAndUpdate(id, { type: "admin" }, { new: true });
 
         await user.save();
 
@@ -169,9 +169,26 @@ export const makeAdmin = async (req, res) => {
             return res.status(404).json({ message: "No User Found on This Id" })
         }
 
-        res.status(200).json({message:"Selected As Admin Succesfull",user});
+        res.status(200).json({ message: "Selected As Admin Succesfull", user });
 
     } catch (error) {
         res.status(500).json({ message: "Something Went Wrong" })
     }
+}
+
+export const updateUser = async (req, res) => {
+    const id = req.params.id;
+    const reqUser = req?.user;
+    if (reqUser?.type != "admin" || reqUser?._id != id) {
+        console.log("unAuthorized");
+        return res.status(401).json("Not Authorized to Update !");
+    }
+
+    const { name, email, password, profilePic } = req.body;
+
+    const user=User.findById(id);
+    if(!user){
+        return res.status(404).json({messege:"No User Found with this id"});
+    }
+
 }

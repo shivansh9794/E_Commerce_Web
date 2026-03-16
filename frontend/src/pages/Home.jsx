@@ -1,7 +1,13 @@
-import React from 'react'
-import NavBar from '../components/NavBar'
+import React, { useEffect } from 'react'
+
+
+
 
 const Home = () => {
+  
+
+
+
   return (
     <div>
       {/* <h1>home page</h1> */}

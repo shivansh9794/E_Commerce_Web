@@ -3,11 +3,16 @@ import React, { useState } from "react";
 import { url } from "../../config/keyConfig";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/userSlice";
+import { useSelector } from "react-redux";
+
+
 
 
 const LoginPage = () => {
 
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
@@ -20,9 +25,16 @@ const LoginPage = () => {
       email,
       password
     };
+
     try {
       const user = await axios.post(`${url}/api/user/login`, formData, { withCredentials: true });
+      console.log("user : ", user?.data);
+      localStorage.setItem("UserInfo", JSON.stringify(user?.data));
       toast.success("Login Successfull");
+
+
+      const userData = JSON.parse(localStorage.getItem("UserInfo"));
+      dispatch(setUser(userData));
       navigate('/', { replace: true })
     } catch (error) {
       const message = error?.response?.data?.message || "Login Failed";
@@ -30,6 +42,9 @@ const LoginPage = () => {
       console.log("Error : ", message);
     }
   };
+
+
+  console.log("User----", useSelector((state) => state.user.user));
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
@@ -50,17 +65,6 @@ const LoginPage = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-
-        {/* <div className="flex flex-col w-full">
-          <label className="mb-1 text-sm font-medium">Password</label>
-          <input
-            type={show?"text":"password"}
-            placeholder="Enter your password"
-            className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="button" onClick={()=>{setShow(!show)}}>show</button>
-        </div> */}
 
         <div className="flex flex-col w-full">
           <label className="mb-1 text-sm font-medium">Password</label>
@@ -108,11 +112,6 @@ const LoginPage = () => {
         >
           Login
         </button>
-
-        {/* <div>
-          <a className="hover:text-blue-500 cursor-pointer">don't have account? <a className="hover:text-red-600">register</a></a>
-        </div> */}
-
 
         <div className="group cursor-pointer" onClick={() => navigate('/signIn')}>
           <span className="group-hover:text-blue-500">
