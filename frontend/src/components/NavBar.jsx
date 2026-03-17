@@ -283,8 +283,6 @@ const Navbar = () => {
 
       </div>
 
-
-
       {/* Second Navbar */}
       <div className="mt-16 bg-red-300 h-10 flex items-center px-6 shadow" >
         <ul className="flex gap-6">
