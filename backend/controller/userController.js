@@ -40,6 +40,10 @@ export const addUser = async (req, res) => {
 }
 
 export const getAllUsers = async (req, res) => {
+    if(req?.user.type!="admin"){
+        res.status(400);
+        throw new Error("Only admin can access..")
+    }
     try {
         const user = await User.find().select("-password");;
         res.status(200).json({ messege: "ALL USERS..", user });
@@ -57,10 +61,12 @@ export const login = async (req, res) => {
         const user = await User.findOne({ email });
         if (!user) { return res.status(404).json({ message: "Email Does't Exist in DB" }) }
         const p = await user?.matchPassword(password);
+        // checking password using becryptjs
         if (p == false) {
             res.status(401).json({ message: "Wrong Password. Login Failed" });
             throw new Error("Wrong Password");
         }
+        // main code
         if (user && p) {
             const token = generateToken(user._id);
             res.cookie("jwt", token, {
