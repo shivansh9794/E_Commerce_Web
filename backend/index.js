@@ -4,9 +4,10 @@ import userRoutes from './routes/userRoutes.js'
 import connectDB from './config/dbConfig.js';
 import cookieParser from "cookie-parser";
 import cors from 'cors'
+import adminRoutes from './routes/adminRoutes.js'
 
 dotenv.config();
-const app=express();
+const app = express();
 app.use(express.json());
 app.use(cookieParser());
 // app.use(cors());
@@ -20,12 +21,13 @@ app.use(
 
 connectDB();
 
-app.get("/",(req,res)=>{
-    res.send("Backend is Live 🔥");
+app.get("/", (req, res) => {
+  res.send("Backend is Live 🔥");
 })
 
-app.use("/api/user",userRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/admin", adminRoutes);
 
-app.listen(process.env.PORT,()=>{
-    console.log(`Server is live on http://localhost:${process.env.PORT}`)
+app.listen(process.env.PORT, () => {
+  console.log(`Server is live on http://localhost:${process.env.PORT}`)
 })

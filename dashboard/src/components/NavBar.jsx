@@ -239,7 +239,7 @@ const Navbar = () => {
                                             <button
                                                 onClick={() => {
                                                     localStorage.removeItem("UserInfo");
-                                                    dispatch(setUser(null));
+                                                    // dispatch(setUser(null));
                                                     toast.success("Logged out");
                                                     setOpenDropdown(!openDropdown)
                                                     navigate("/login", { replace: true });
