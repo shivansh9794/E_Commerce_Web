@@ -96,6 +96,7 @@ const Navbar = () => {
                                     </button>
                                 </div>
 
+
                                 <div className="absolute inset-y-0 end-0 flex items-center pointer-events-none z-20 pe-3 text-foreground-inverse/60">
                                     <svg
                                         className="shrink-0 size-3 text-foreground-inverse/60"
