@@ -273,7 +273,6 @@ const Navbar = () => {
                     <li className="cursor-pointer hover:text-blue-500">Profile</li>
                 </ul>
             </div >
-
         </>
     );
 };
