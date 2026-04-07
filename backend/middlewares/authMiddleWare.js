@@ -34,7 +34,6 @@ const protect = async (req, res, next) => {
 
   // 2️⃣ Check Cookies (if header not present)
   if (!token && req.cookies?.jwt) {
-
     console.log("Cookie Found")
     token = req.cookies.jwt;
   }
@@ -49,7 +48,8 @@ const protect = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // 5️⃣ Get user from DB (without password)
-    req.user = await User.findById(decoded.id).select("-password");
+    try { req.user = await User.findById(decoded.id).select("-password"); }
+    catch (error) { res.status(404).json("user Not found in db") }
 
     next();
   } catch (error) {
