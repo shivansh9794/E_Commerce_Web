@@ -18,6 +18,10 @@ const productSchema = new mongoose.Schema({
     },
     discountedPrice: {
         type: Number
+    },
+    seller: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     }
 
 });

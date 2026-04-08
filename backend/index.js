@@ -5,6 +5,7 @@ import connectDB from './config/dbConfig.js';
 import cookieParser from "cookie-parser";
 import cors from 'cors'
 import adminRoutes from './routes/adminRoutes.js'
+import productRoutes from './routes/productRoutes.js'
 
 dotenv.config();
 const app = express();
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/product", productRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is live on http://localhost:${process.env.PORT}`)
