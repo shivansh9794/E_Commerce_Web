@@ -29,9 +29,19 @@ const productSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Review"
         }
-    ]
+    ],
+    // total review Count
+    numReviews: {
+        type: Number,
+        default: 0
+    },
+    // Average rating
+    rating: {
+        type: Number,
+        default: 0
+    }
 
-});
+}, { timestamps: true });
 
 const Product = mongoose.model("Product", productSchema);
 

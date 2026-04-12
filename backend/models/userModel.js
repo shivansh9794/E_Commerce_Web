@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcryptjs from 'bcryptjs';
 
-const userSchema =new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -23,8 +23,12 @@ const userSchema =new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ["user", "admin","seller"],
+        enum: ["user", "admin", "seller"],
         default: "user",
+    },
+    cart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Cart"
     }
 }, { timestamps: true });
 
