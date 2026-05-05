@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 // import { useDispatch } from "react-redux";
-// import { setUser } from "../redux/userSlice";
-// import { useSelector } from "react-redux";
+import { setUser } from "../redux/userSlice";
+import { useSelector } from "react-redux";
 
 
 const Navbar = () => {
